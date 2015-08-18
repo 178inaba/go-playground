@@ -67,10 +67,6 @@ func share(w http.ResponseWriter, r *http.Request) {
 	c := session.DB("playground").C("snippet")
 	err = c.Insert(snip)
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	if err != nil {
 		log.Errorf("putting Snippet: %v", err)
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 		return

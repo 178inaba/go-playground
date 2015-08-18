@@ -11,11 +11,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-var staticMux = http.NewServeMux()
-
 func init() {
 	http.HandleFunc("/", edit)
-	staticMux.Handle("/", http.FileServer(http.Dir("static")))
 }
 
 var editTemplate = template.Must(template.ParseFiles("edit.html"))
@@ -25,10 +22,6 @@ type editData struct {
 }
 
 func edit(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		staticMux.ServeHTTP(w, r)
-	}
-
 	// mongo
 	session, err := mgo.Dial("localhost")
 	if err != nil {
@@ -48,10 +41,6 @@ func edit(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = c.Find(bson.M{"id": id}).One(&snip)
-		if err != nil {
-			log.Fatal(err)
-		}
-
 		if err != nil {
 			log.Errorf("loading Snippet: %v", err)
 			http.Error(w, "Snippet not found", http.StatusNotFound)
