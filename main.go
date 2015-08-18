@@ -15,6 +15,6 @@ func main() {
 	log.Info("server run: port: ", port)
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("server error: %v", err)
 	}
 }

@@ -53,6 +53,7 @@ func edit(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err != nil {
+			log.Errorf("loading Snippet: %v", err)
 			http.Error(w, "Snippet not found", http.StatusNotFound)
 			return
 		}

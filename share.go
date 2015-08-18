@@ -6,10 +6,11 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 
 	"gopkg.in/mgo.v2"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 const salt = "[replace this with something unique]"
@@ -44,6 +45,7 @@ func share(w http.ResponseWriter, r *http.Request) {
 	_, err := io.Copy(&body, io.LimitReader(r.Body, maxSnippetSize+1))
 	r.Body.Close()
 	if err != nil {
+		log.Errorf("reading Body: %v", err)
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -69,6 +71,7 @@ func share(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
+		log.Errorf("putting Snippet: %v", err)
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
