@@ -18,17 +18,21 @@ const salt = "[replace this with something unique]"
 const maxSnippetSize = 64 * 1024
 
 type Snippet struct {
+	Id   string
 	Body []byte
 }
 
-func (s *Snippet) Id() string {
+func (s *Snippet) setId() string {
 	h := sha1.New()
 	io.WriteString(h, salt)
 	h.Write(s.Body)
 	sum := h.Sum(nil)
 	b := make([]byte, base64.URLEncoding.EncodedLen(len(sum)))
 	base64.URLEncoding.Encode(b, sum)
-	return string(b)[:10]
+
+	id := string(b)[:10]
+	s.Id = id
+	return id
 }
 
 func init() {
@@ -55,7 +59,7 @@ func share(w http.ResponseWriter, r *http.Request) {
 	}
 
 	snip := &Snippet{Body: body.Bytes()}
-	id := snip.Id()
+	id := snip.setId()
 
 	// mongo
 	session, err := mgo.Dial("localhost")
