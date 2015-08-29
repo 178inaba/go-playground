@@ -6,7 +6,7 @@ go-playground is web application that run code of go language.
 
 inspired [golang/playground](https://github.com/golang/playground)
 
-## run(not build)
+## run(non build)
 
 `$ go run *.go`
 
