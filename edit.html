@@ -27,6 +27,12 @@
 				'embedHTMLEl':  '#shareURL'
 			});
 			$('#code').linedtextarea();
+
+			// login
+			$('#githubLoginButton').click(function() {
+				location.href = $(this).attr("url");
+			});
+
 			// Avoid line wrapping.
 			$('#code').attr('wrap', 'off');
 			var about = $('#about');
@@ -97,6 +103,8 @@
 				</label>
 			</div>
 			<div id="aboutControls">
+				<input type="button" value="gist" id="gistButton" onclick="location.href = '/gist'">
+				<input type="button" value="github login" id="githubLoginButton" url="{{printf "%s" .AuthURL}}">
 				<input type="button" value="About" id="aboutButton">
 			</div>
 		</div>

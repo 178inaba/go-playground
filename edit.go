@@ -11,14 +11,24 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-func init() {
-	http.HandleFunc("/", edit)
+const hello = `package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, playground")
 }
+`
 
 var editTemplate = template.Must(template.ParseFiles("edit.html"))
 
 type editData struct {
 	Snippet *Snippet
+	AuthURL string
+}
+
+func init() {
+	http.HandleFunc("/", edit)
 }
 
 func edit(w http.ResponseWriter, r *http.Request) {
@@ -52,14 +62,5 @@ func edit(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	editTemplate.Execute(w, &editData{snip})
+	editTemplate.Execute(w, &editData{Snippet: snip, AuthURL: oauth2Conf.AuthCodeURL("state")})
 }
-
-const hello = `package main
-
-import "fmt"
-
-func main() {
-	fmt.Println("Hello, playground")
-}
-`
