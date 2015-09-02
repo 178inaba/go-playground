@@ -29,8 +29,17 @@
 			$('#code').linedtextarea();
 
 			// login
-			$('#githubLoginButton').click(function() {
+			$('#loginButton').click(function() {
 				location.href = $(this).attr("url");
+			});
+
+			// create gist
+			$("#gistButton").click(function() {
+				$.ajax({
+					url: "/gist",
+					type: "POST",
+					data: $('#code').val(),
+				});
 			});
 
 			// Avoid line wrapping.
@@ -103,8 +112,8 @@
 				</label>
 			</div>
 			<div id="aboutControls">
-				<input type="button" value="gist" id="gistButton" onclick="location.href = '/gist'">
-				<input type="button" value="github login" id="githubLoginButton" url="{{printf "%s" .AuthURL}}">
+				<input type="button" value="post gist" id="gistButton">
+				<input type="button" value="login github" id="loginButton" url="{{printf "%s" .AuthURL}}">
 				<input type="button" value="About" id="aboutButton">
 			</div>
 		</div>
