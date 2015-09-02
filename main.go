@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"golang.org/x/oauth2"
@@ -48,24 +47,17 @@ func init() {
 func main() {
 	log.Info("main()")
 
-	serveStatic()
+	http.Handle("/js/", http.FileServer(http.Dir("static")))
+	http.Handle("/css/", http.FileServer(http.Dir("static")))
+	http.Handle("/img/", http.FileServer(http.Dir("static")))
+	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/img/favicon.ico")
+	})
 
 	log.Info("server run: port: ", port)
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 	if err != nil {
 		log.Fatalf("server error: %v", err)
-	}
-}
-
-func serveStatic() {
-	dirName := "static"
-
-	files, _ := ioutil.ReadDir(dirName)
-	for _, f := range files {
-		fileName := f.Name()
-		http.HandleFunc("/"+fileName, func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, dirName+"/"+fileName)
-		})
 	}
 }
 

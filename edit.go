@@ -20,7 +20,7 @@ func main() {
 }
 `
 
-var editTemplate = template.Must(template.ParseFiles("edit.html"))
+var editTemplate = template.Must(template.ParseFiles("template/edit.html"))
 
 type editData struct {
 	Snippet *Snippet
