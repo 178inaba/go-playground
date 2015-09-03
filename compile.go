@@ -23,7 +23,7 @@ func compile(w http.ResponseWriter, r *http.Request) {
 
 func passThru(w io.Writer, req *http.Request) error {
 	defer req.Body.Close()
-	r, err := http.Post(runUrl, req.Header.Get("Content-type"), req.Body)
+	r, err := http.Post(runURL, req.Header.Get("Content-type"), req.Body)
 	if err != nil {
 		log.Errorf("making POST request: %v", err)
 		return err
