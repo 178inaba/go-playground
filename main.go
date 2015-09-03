@@ -31,7 +31,7 @@ type setting struct {
 }
 
 type client struct {
-	Id     string `toml:"id"`
+	ID     string `toml:"id"`
 	Secret string `toml:"secret"`
 }
 
@@ -40,7 +40,7 @@ func init() {
 
 	loadSetting()
 
-	oauth2Conf.ClientID = s.client.Id
+	oauth2Conf.ClientID = s.client.ID
 	oauth2Conf.ClientSecret = s.client.Secret
 }
 

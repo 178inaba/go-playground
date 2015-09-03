@@ -8,7 +8,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-const runUrl = "http://golang.org/compile?output=json"
+const runURL = "http://golang.org/compile?output=json"
 
 func init() {
 	http.HandleFunc("/compile", compile)

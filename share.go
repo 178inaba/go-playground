@@ -17,12 +17,13 @@ const salt = "[replace this with something unique]"
 
 const maxSnippetSize = 64 * 1024
 
+// Snippet is type of order to save the code made with playground.
 type Snippet struct {
-	Id   string
+	ID   string
 	Body []byte
 }
 
-func (s *Snippet) setId() string {
+func (s *Snippet) setID() string {
 	h := sha1.New()
 	io.WriteString(h, salt)
 	h.Write(s.Body)
@@ -31,7 +32,7 @@ func (s *Snippet) setId() string {
 	base64.URLEncoding.Encode(b, sum)
 
 	id := string(b)[:10]
-	s.Id = id
+	s.ID = id
 	return id
 }
 
@@ -59,7 +60,7 @@ func share(w http.ResponseWriter, r *http.Request) {
 	}
 
 	snip := &Snippet{Body: body.Bytes()}
-	id := snip.setId()
+	id := snip.setID()
 
 	// mongo
 	session, err := mgo.Dial("localhost")
