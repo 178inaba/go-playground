@@ -12,7 +12,7 @@ import (
 
 const (
 	port        = 8080
-	settingToml = "setting.toml"
+	settingToml = "setting/setting.toml"
 )
 
 var (
