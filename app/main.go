@@ -57,7 +57,7 @@ func init() {
 }
 
 func main() {
-	log.Info("main()")
+	log.Debug("main()")
 
 	http.Handle("/js/", http.FileServer(http.Dir("static")))
 	http.Handle("/css/", http.FileServer(http.Dir("static")))
