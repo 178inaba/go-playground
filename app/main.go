@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net/http"
 
@@ -41,7 +42,11 @@ type sandbox struct {
 }
 
 func init() {
-	log.SetLevel(log.DebugLevel)
+	debug := flag.Bool("d", false, "output debug log.")
+	flag.Parse()
+	if *debug {
+		log.SetLevel(log.DebugLevel)
+	}
 
 	loadSetting()
 
