@@ -1,14 +1,16 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	log "github.com/Sirupsen/logrus"
 )
-
-const runURL = "http://golang.org/compile?output=json"
 
 func init() {
 	http.HandleFunc("/compile", compile)
@@ -22,8 +24,17 @@ func compile(w http.ResponseWriter, r *http.Request) {
 }
 
 func passThru(w io.Writer, req *http.Request) error {
+	log.Debug("passThru()")
+
 	defer req.Body.Close()
-	r, err := http.Post(runURL, req.Header.Get("Content-type"), req.Body)
+
+	jsonReader, err := makeBodyJson(req.Body)
+	if err != nil {
+		log.Errorf("make body json error: %v", err)
+		return err
+	}
+
+	r, err := http.Post(s.sandbox.URL, req.Header.Get("Content-type"), jsonReader)
 	if err != nil {
 		log.Errorf("making POST request: %v", err)
 		return err
@@ -34,4 +45,30 @@ func passThru(w io.Writer, req *http.Request) error {
 		return err
 	}
 	return nil
+}
+
+func makeBodyJson(httpBody io.Reader) (io.Reader, error) {
+	// io.Reader -> []byte
+	httpBodyByte, err := ioutil.ReadAll(httpBody)
+	if err != nil {
+		log.Errorf("body read error: %v", err)
+		return nil, err
+	}
+
+	// []byte -> url.Values
+	v, err := url.ParseQuery(string(httpBodyByte))
+	if err != nil {
+		log.Errorf("query parse error: %v", err)
+		return nil, err
+	}
+
+	// make json
+	json, err := json.Marshal(map[string]string{"Body": v.Get("body")})
+	if err != nil {
+		log.Errorf("json marshal error: %v", err)
+		return nil, err
+	}
+
+	// convert byte json -> io.Reader
+	return bytes.NewReader(json), nil
 }

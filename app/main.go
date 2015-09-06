@@ -27,12 +27,17 @@ var (
 )
 
 type setting struct {
-	client `toml:"client"`
+	client  `toml:"client"`
+	sandbox `toml:"sandbox"`
 }
 
 type client struct {
 	ID     string `toml:"id"`
 	Secret string `toml:"secret"`
+}
+
+type sandbox struct {
+	URL string `toml:"url"`
 }
 
 func init() {
