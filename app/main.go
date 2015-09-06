@@ -11,10 +11,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-const (
-	port        = 8080
-	settingToml = "setting/setting.toml"
-)
+const settingToml = "setting/setting.toml"
 
 var (
 	s          setting
@@ -28,8 +25,13 @@ var (
 )
 
 type setting struct {
+	server  `toml:"server"`
 	client  `toml:"client"`
 	sandbox `toml:"sandbox"`
+}
+
+type server struct {
+	Port int `toml:"port"`
 }
 
 type client struct {
@@ -64,8 +66,8 @@ func main() {
 		http.ServeFile(w, r, "static/img/favicon.ico")
 	})
 
-	log.Info("server run: port: ", port)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	log.Info("server run: port: ", s.server.Port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", s.server.Port), nil)
 	if err != nil {
 		log.Fatalf("server error: %v", err)
 	}

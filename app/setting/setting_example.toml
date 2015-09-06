@@ -1,3 +1,6 @@
+[server]
+port = 0000
+
 [client]
 id = "xxx"
 secret = "xxx"
