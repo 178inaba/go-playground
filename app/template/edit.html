@@ -7,6 +7,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="/js/jquery-linedtextarea.js"></script>
+		<script src="/js/js.cookie.js"></script>
 		<script src="/js/playground.js"></script>
 		<script src="/js/playground-embed.js"></script>
 		<script src="/js/edit.js"></script>
@@ -32,7 +33,7 @@
 				</label>
 			</div>
 			<div id="aboutControls">
-				<button type="button" class="btn btn-primary" id="gistButton">post gist</button>
+				<button type="button" class="btn btn-primary" id="postGistModalButton">post gist</button>
 				<button type="button" class="btn btn-primary" id="loginButton" url="{{printf "%s" .AuthURL}}">login github</button>
 				<button type="button" class="btn btn-primary" id="aboutButton">About</button>
 			</div>
@@ -41,6 +42,21 @@
 			<textarea itemprop="description" id="code" name="code" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false">{{printf "%s" .Snippet.Body}}</textarea>
 		</div>
 		<div id="output"></div>
+
+		<!-- login alert modal -->
+		<div class="modal fade" id="loginAlertModal" tabindex="-1" role="dialog" aria-labelledby="loginAlertModalLabel">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="loginAlertModalLabel">not login github</h4>
+					</div>
+					<div class="modal-body">
+						please login to github!
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- post gist modal -->
 		<div class="modal fade" id="postGistModal" tabindex="-1" role="dialog" aria-labelledby="postGistModalLabel">
@@ -67,7 +83,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-						<button type="button" class="btn btn-primary">post</button>
+						<button type="button" class="btn btn-primary" id="postGistButton">post</button>
 					</div>
 				</div>
 			</div>

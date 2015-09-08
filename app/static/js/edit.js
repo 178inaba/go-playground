@@ -23,8 +23,17 @@ $(document).ready(function() {
 		location.href = $(this).attr("url");
 	});
 
+	// open post gist modal
+	$("#postGistModalButton").click(function() {
+		if (typeof Cookies.get("access_token") === "undefined") {
+			$("#loginAlertModal").modal("show");
+		} else {
+			$("#postGistModal").modal("show");
+		}
+	});
+
 	// create gist
-	$("#gistButton").click(function() {
+	$("#postGistButton").click(function() {
 		$.ajax({
 			url: "/gist",
 			type: "POST",
