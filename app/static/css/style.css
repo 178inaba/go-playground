@@ -11,8 +11,7 @@ body {
 a {
 	color: #009;
 }
-#wrap, 
-#about {
+#wrap, #about {
 	padding: 5px;
 	margin: 0;
 
@@ -86,7 +85,7 @@ a {
 }
 #head {
 	float: left;
-	padding: 15px 10px;
+	padding: 13px 10px;
 
 	font-size: 20px;
 	font-family: Helvetica, Arial, sans-serif;
@@ -96,30 +95,26 @@ a {
 	padding: 10px 15px;
 	min-width: 245px;
 }
-#controls > input {
-	border-radius: 5px;
-}
 #aboutControls {
 	float: right;
 	padding: 10px 15px;
 }
-input[type=button],
-#importsBox {
+#banner button, #importsBox {
 	height: 30px;
-	border: 1px solid #375EAB;
 	font-size: 16px;
 	font-family: Helvetica, Arial, sans-serif;
-	background: #375EAB;
-	color: white;
-	position: static;
-	top: 1px;
-	border-radius: 5px;
+	padding: 2px 6px;
 }
 #importsBox {
 	position: relative;
 	display: inline;
 	padding: 5px 0;
 	margin-right: 5px;
+	border: 1px solid #2E6DA4;
+	background-color: #337AB7;
+	color: white;
+	border-radius: 4px;
+	top: 1px;
 }
 #importsBox input {
 	position: relative;
@@ -151,7 +146,4 @@ input[type=button],
 .lineerror {
 	color: red;
 	background: #FDD;
-}
-.exit {
-	color: lightgray;
 }
