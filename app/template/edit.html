@@ -2,8 +2,10 @@
 <html>
 	<head>
 		<title>The Go Playground + gist</title>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/css/style.css">
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="/js/jquery-linedtextarea.js"></script>
 		<script src="/js/playground.js"></script>
 		<script src="/js/playground-embed.js"></script>
@@ -39,6 +41,38 @@
 			<textarea itemprop="description" id="code" name="code" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false">{{printf "%s" .Snippet.Body}}</textarea>
 		</div>
 		<div id="output"></div>
+
+		<!-- post gist modal -->
+		<div class="modal fade" id="postGistModal" tabindex="-1" role="dialog" aria-labelledby="postGistModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="postGistModalLabel">post gist</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="fileName">file name</label>
+							<input type="text" class="form-control" id="fileName" placeholder="file name">
+						</div>
+						<div class="form-group">
+							<label for="description">description</label>
+							<input type="text" class="form-control" id="description" placeholder="description">
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox"> public
+							</label>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+						<button type="button" class="btn btn-primary">post</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<img itemprop="image" src="/img/gopher.png" style="display:none">
 		<div id="about">
 <p><b>About the Playground</b></p>
