@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"golang.org/x/oauth2"
 
@@ -46,7 +47,7 @@ func gistHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Debug(*retGist.HTMLURL)
+	log.Debug(*retGist)
 }
 
 func makeGist(httpBody io.Reader) (github.Gist, error) {
@@ -70,10 +71,10 @@ func makeGist(httpBody io.Reader) (github.Gist, error) {
 
 	// create gist
 	gist := github.Gist{
-		Description: &postGist.Description,
+		Description: github.String(strings.TrimSpace(postGist.Description)),
 		Public:      &postGist.Public,
 		Files: map[github.GistFilename]github.GistFile{
-			github.GistFilename(postGist.FileName + ".go"): github.GistFile{
+			github.GistFilename(strings.TrimSpace(postGist.FileName) + ".go"): github.GistFile{
 				Content: &postGist.Code,
 			},
 		},
