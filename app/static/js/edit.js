@@ -37,8 +37,14 @@ $(document).ready(function() {
 		$.ajax({
 			url: "/gist",
 			type: "POST",
-			data: $('#code').val()
+			data: JSON.stringify({
+				description: $("#description").val(),
+				public: $("#public").prop("checked"),
+				file_name: $("#fileName").val(),
+				code: $("#code").val()
+			})
 		});
+		$("#postGistModal").modal("hide");
 	});
 
 	// Avoid line wrapping.

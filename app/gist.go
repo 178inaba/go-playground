@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 
@@ -32,38 +35,49 @@ func gistHandler(w http.ResponseWriter, r *http.Request) {
 	// github api
 	client := github.NewClient(tc)
 
-	// get post source
-	byteBody, err := ioutil.ReadAll(r.Body)
+	gist, err := makeGist(r.Body)
 	if err != nil {
-		log.Error("body read error: ", err)
+		log.Errorf("make gist error: %v", err)
 	}
 
-	body := string(byteBody)
-
-	// create post gist
-	postGist := github.Gist{
-		Description: getStrPtr("test gist"),
-		Public:      getBoolPtr(false),
-		Files: map[github.GistFilename]github.GistFile{
-			"test.go": github.GistFile{
-				Content: &body,
-			},
-		},
-	}
-	retGist, resp, err := client.Gists.Create(&postGist)
+	retGist, _, err := client.Gists.Create(&gist)
 	if err != nil {
 		log.Error("create gist error: ", err)
 		return
 	}
 
-	log.Debug(retGist)
-	log.Debug(resp)
+	log.Debug(*retGist.HTMLURL)
 }
 
-func getStrPtr(s string) *string {
-	return &s
-}
+func makeGist(httpBody io.Reader) (github.Gist, error) {
+	// get body
+	byteBody, err := ioutil.ReadAll(httpBody)
+	if err != nil {
+		return github.Gist{}, fmt.Errorf("get body error: %v", err)
+	}
 
-func getBoolPtr(b bool) *bool {
-	return &b
+	// unmarshal
+	postGist := struct {
+		FileName    string `json:"file_name"`
+		Description string `json:"description"`
+		Public      bool   `json:"public"`
+		Code        string `json:"code"`
+	}{}
+	err = json.Unmarshal(byteBody, &postGist)
+	if err != nil {
+		return github.Gist{}, fmt.Errorf("json unmarshal error: %v", err)
+	}
+
+	// create gist
+	gist := github.Gist{
+		Description: &postGist.Description,
+		Public:      &postGist.Public,
+		Files: map[github.GistFilename]github.GistFile{
+			github.GistFilename(postGist.FileName): github.GistFile{
+				Content: &postGist.Code,
+			},
+		},
+	}
+
+	return gist, nil
 }
