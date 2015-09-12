@@ -23,7 +23,13 @@ $ cd app/
 $ cp setting/setting_example.toml setting/setting.toml
 # edit setting/setting.toml in your client id and client secret
 $ go run *.go # non build
+# or
+$ go build && ./app
 ```
+
+#### option
+
+* -d output debug log.
 
 ## licence
 
