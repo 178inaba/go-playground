@@ -73,7 +73,7 @@ func makeGist(httpBody io.Reader) (github.Gist, error) {
 		Description: &postGist.Description,
 		Public:      &postGist.Public,
 		Files: map[github.GistFilename]github.GistFile{
-			github.GistFilename(postGist.FileName): github.GistFile{
+			github.GistFilename(postGist.FileName + ".go"): github.GistFile{
 				Content: &postGist.Code,
 			},
 		},
