@@ -46,8 +46,8 @@ $(document).ready(function() {
 		})
 			.done(function(data, textStatus, jqXHR) {
 				$("#postGistModal").modal("hide");
-				$("#postGistDoneModal #gistLink").attr("href", data);
-				$("#postGistDoneModal #gistLink").text(data);
+				$("#postGistDoneModal a#gistLink").attr("href", data);
+				$("#postGistDoneModal a#gistLink").text(data);
 				$("#postGistDoneModal").modal("show");
 				console.log(data);
 				console.log(textStatus);
