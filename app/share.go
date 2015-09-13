@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -38,26 +39,40 @@ func init() {
 }
 
 func share(w http.ResponseWriter, r *http.Request) {
+	id, err := saveSnip(w, r, "")
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	fmt.Fprint(w, id)
+}
+
+func saveSnip(w http.ResponseWriter, r *http.Request, idSuffix string) (string, error) {
 	if r.Method != "POST" {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
+		return "", errors.New("Forbidden")
 	}
 
 	var body bytes.Buffer
 	_, err := io.Copy(&body, io.LimitReader(r.Body, maxSnippetSize+1))
 	r.Body.Close()
 	if err != nil {
-		log.Errorf("reading Body: %v", err)
 		http.Error(w, "Server Error", http.StatusInternalServerError)
-		return
+		return "", fmt.Errorf("reading Body: %v", err)
 	}
 	if body.Len() > maxSnippetSize {
 		http.Error(w, "Snippet is too large", http.StatusRequestEntityTooLarge)
-		return
+		return "", errors.New("Snippet is too large")
 	}
 
 	snip := &Snippet{Body: body.Bytes()}
 	snip.setID()
+
+	// add suffix
+	if idSuffix != "" {
+		snip.ID += "_" + idSuffix
+	}
 
 	// get mongo session
 	mgoSess := mgoSessOrgn.Copy()
@@ -66,10 +81,9 @@ func share(w http.ResponseWriter, r *http.Request) {
 	c := mgoSess.DB("playground").C("snippet")
 	err = c.Insert(snip)
 	if err != nil {
-		log.Errorf("putting Snippet: %v", err)
 		http.Error(w, "Server Error", http.StatusInternalServerError)
-		return
+		return "", fmt.Errorf("putting Snippet: %v", err)
 	}
 
-	fmt.Fprint(w, snip.ID)
+	return snip.ID, nil
 }

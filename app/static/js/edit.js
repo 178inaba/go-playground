@@ -20,7 +20,14 @@ $(document).ready(function() {
 
 	// login
 	$('#loginButton').click(function() {
-		location.href = $(this).attr("url");
+		$.ajax({
+			url: "/save",
+			type: "POST",
+			data: $("#code").val()
+		})
+			.done(function(data, textStatus, jqXHR) {
+				location.href = data;
+			});
 	});
 
 	// open post gist modal

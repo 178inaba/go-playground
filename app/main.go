@@ -35,7 +35,8 @@ type setting struct {
 }
 
 type server struct {
-	Port int `toml:"port"`
+	Port              int    `toml:"port"`
+	OAuth2RedirectURL string `toml:"oauth2_redirect_url"`
 }
 
 type mongo struct {

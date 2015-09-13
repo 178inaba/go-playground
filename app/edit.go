@@ -23,7 +23,6 @@ var editTemplate = template.Must(template.ParseFiles("template/edit.html"))
 
 type editData struct {
 	Snippet *Snippet
-	AuthURL string
 }
 
 func init() {
@@ -58,5 +57,5 @@ func edit(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	editTemplate.Execute(w, &editData{Snippet: snip, AuthURL: oauth2Conf.AuthCodeURL("state")})
+	editTemplate.Execute(w, &editData{snip})
 }
