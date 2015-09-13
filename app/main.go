@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"gopkg.in/mgo.v2"
+
 	"golang.org/x/oauth2"
 
 	"github.com/BurntSushi/toml"
@@ -14,8 +16,9 @@ import (
 const settingToml = "setting/setting.toml"
 
 var (
-	s          setting
-	oauth2Conf = &oauth2.Config{
+	s           setting
+	mgoSessOrgn *mgo.Session
+	oauth2Conf  = &oauth2.Config{
 		Scopes: []string{"gist"},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://github.com/login/oauth/authorize",
@@ -26,12 +29,17 @@ var (
 
 type setting struct {
 	server  `toml:"server"`
+	mongo   `toml:"mongo"`
 	client  `toml:"client"`
 	sandbox `toml:"sandbox"`
 }
 
 type server struct {
 	Port int `toml:"port"`
+}
+
+type mongo struct {
+	Host string `toml:"host"`
 }
 
 type client struct {
@@ -49,15 +57,19 @@ func init() {
 	if *debug {
 		log.SetLevel(log.DebugLevel)
 	}
-
-	loadSetting()
-
-	oauth2Conf.ClientID = s.client.ID
-	oauth2Conf.ClientSecret = s.client.Secret
 }
 
 func main() {
 	log.Debug("main()")
+
+	loadSetting()
+
+	// set oauth2 config
+	oauth2Conf.ClientID = s.client.ID
+	oauth2Conf.ClientSecret = s.client.Secret
+
+	// connect mongo
+	setMgoSess()
 
 	http.Handle("/js/", http.FileServer(http.Dir("static")))
 	http.Handle("/css/", http.FileServer(http.Dir("static")))
@@ -78,6 +90,18 @@ func loadSetting() {
 
 	_, err := toml.DecodeFile(settingToml, &s)
 	if err != nil {
-		log.Error("setting load error: ", err)
+		log.Fatalf("setting load error: %v", err)
 	}
+}
+
+func setMgoSess() {
+	log.Debug("setMgoSess()")
+
+	var err error
+	mgoSessOrgn, err = mgo.Dial(s.mongo.Host)
+	if err != nil {
+		log.Fatalf("mongo dial error: %v", err)
+	}
+
+	mgoSessOrgn.SetMode(mgo.Monotonic, true)
 }

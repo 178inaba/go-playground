@@ -8,8 +8,6 @@ import (
 	"io"
 	"net/http"
 
-	"gopkg.in/mgo.v2"
-
 	log "github.com/Sirupsen/logrus"
 )
 
@@ -24,17 +22,15 @@ type Snippet struct {
 	Body []byte
 }
 
-func (s *Snippet) setID() string {
+func (snip *Snippet) setID() {
 	h := sha1.New()
 	io.WriteString(h, salt)
-	h.Write(s.Body)
+	h.Write(snip.Body)
 	sum := h.Sum(nil)
 	b := make([]byte, base64.URLEncoding.EncodedLen(len(sum)))
 	base64.URLEncoding.Encode(b, sum)
 
-	id := string(b)[:10]
-	s.ID = id
-	return id
+	snip.ID = string(b)[:10]
 }
 
 func init() {
@@ -61,16 +57,13 @@ func share(w http.ResponseWriter, r *http.Request) {
 	}
 
 	snip := &Snippet{Body: body.Bytes()}
-	id := snip.setID()
+	snip.setID()
 
-	// mongo
-	session, err := mgo.Dial("localhost")
-	if err != nil {
-		panic(err)
-	}
-	defer session.Close()
-	session.SetMode(mgo.Monotonic, true)
-	c := session.DB("playground").C("snippet")
+	// get mongo session
+	mgoSess := mgoSessOrgn.Copy()
+	defer mgoSess.Close()
+
+	c := mgoSess.DB("playground").C("snippet")
 	err = c.Insert(snip)
 	if err != nil {
 		log.Errorf("putting Snippet: %v", err)
@@ -78,5 +71,5 @@ func share(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, id)
+	fmt.Fprint(w, snip.ID)
 }
