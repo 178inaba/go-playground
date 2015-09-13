@@ -13,9 +13,10 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-const salt = "[replace this with something unique]"
-
-const maxSnippetSize = 64 * 1024
+const (
+	salt           = "The Go Playground + gist"
+	maxSnippetSize = 64 * 1024
+)
 
 // Snippet is type of order to save the code made with playground.
 type Snippet struct {
