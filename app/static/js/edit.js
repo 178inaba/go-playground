@@ -43,8 +43,22 @@ $(document).ready(function() {
 				file_name: $("#fileName").val(),
 				code: $("#code").val()
 			})
-		});
-		$("#postGistModal").modal("hide");
+		})
+			.done(function(data, textStatus, jqXHR) {
+				$("#postGistModal").modal("hide");
+				$("#postGistDoneModal #gistLink").attr("href", data);
+				$("#postGistDoneModal #gistLink").text(data);
+				$("#postGistDoneModal").modal("show");
+				console.log(data);
+				console.log(textStatus);
+				console.log(jqXHR);
+			})
+			.fail(function(jqXHR, textStatus, errorThrown) {
+				$("#postGistFailModal").modal("show");
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
+			});
 	});
 
 	// Avoid line wrapping.

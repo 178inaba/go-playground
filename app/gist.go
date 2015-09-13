@@ -47,7 +47,7 @@ func gistHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Debug(*retGist)
+	io.WriteString(w, *retGist.HTMLURL)
 }
 
 func makeGist(httpBody io.Reader) (github.Gist, error) {

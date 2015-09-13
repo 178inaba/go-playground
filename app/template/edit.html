@@ -54,13 +54,16 @@
 					<div class="modal-body">
 						please login to github!
 					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- post gist modal -->
 		<div class="modal fade" id="postGistModal" tabindex="-1" role="dialog" aria-labelledby="postGistModalLabel">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog" role="input">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -87,6 +90,42 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
 						<button type="button" class="btn btn-primary" id="postGistButton">post</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- post gist done modal -->
+		<div class="modal fade" id="postGistDoneModal" tabindex="-1" role="dialog" aria-labelledby="postGistDoneModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="postGistDoneModalLabel">create gist success</h4>
+					</div>
+					<div class="modal-body">
+						url by <a id="gistLink" target="_blank"></a>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- post gist fail modal -->
+		<div class="modal fade" id="postGistFailModal" tabindex="-1" role="dialog" aria-labelledby="postGistFailModalLabel">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="postGistFailModalLabel">create gist fail</h4>
+					</div>
+					<div class="modal-body">
+						please retry to post gist.
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
 					</div>
 				</div>
 			</div>
