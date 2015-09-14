@@ -17,13 +17,22 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 
 	// get code
 	r.ParseForm()
+	_, ok := r.Form["code"]
+	if !ok {
+		log.Error("auth code not found error")
+		http.Error(w, "Github Auth Error", http.StatusInternalServerError)
+		return
+	}
+
 	tok, err := oauth2Conf.Exchange(oauth2.NoContext, r.Form["code"][0])
 	if err != nil {
-		log.Fatal(err)
+		log.Errorf("code exchange error: %v", err)
+		http.Error(w, "Github Auth Error", http.StatusInternalServerError)
+		return
 	}
 
 	// access token
-	log.Info("access token: ", tok.AccessToken)
+	log.Debugf("access token: %s", tok.AccessToken)
 
 	c := http.Cookie{
 		Name:  "access_token",
@@ -31,5 +40,5 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, &c)
 
-	http.Redirect(w, r, "/", 303)
+	http.Redirect(w, r, "/", http.StatusFound)
 }
