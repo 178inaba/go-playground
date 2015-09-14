@@ -17,6 +17,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := saveSnip(w, r, "save")
 	if err != nil {
 		log.Error(err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
 
