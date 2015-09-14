@@ -30,12 +30,6 @@ func init() {
 }
 
 func edit(w http.ResponseWriter, r *http.Request) {
-	// get mongo session
-	mgoSess := mgoSessOrgn.Copy()
-	defer mgoSess.Close()
-
-	c := mgoSess.DB("playground").C("snippet")
-
 	snip := &Snippet{Body: []byte(hello)}
 	if strings.HasPrefix(r.URL.Path, "/p/") {
 		id := r.URL.Path[3:]
@@ -45,6 +39,11 @@ func edit(w http.ResponseWriter, r *http.Request) {
 			serveText = true
 		}
 
+		// get mongo session
+		mgoSess := mgoSessOrgn.Copy()
+		defer mgoSess.Close()
+
+		c := mgoSess.DB("playground").C("snippet")
 		err := c.Find(bson.M{"id": id}).One(&snip)
 		if err != nil {
 			log.Errorf("loading Snippet: %v", err)
