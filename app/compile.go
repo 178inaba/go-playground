@@ -28,7 +28,7 @@ func passThru(w io.Writer, req *http.Request) error {
 
 	defer req.Body.Close()
 
-	jsonReader, err := makeBodyJson(req.Body)
+	jsonReader, err := makeBodyJSON(req.Body)
 	if err != nil {
 		log.Errorf("make body json error: %v", err)
 		return err
@@ -47,7 +47,7 @@ func passThru(w io.Writer, req *http.Request) error {
 	return nil
 }
 
-func makeBodyJson(httpBody io.Reader) (io.Reader, error) {
+func makeBodyJSON(httpBody io.Reader) (io.Reader, error) {
 	// io.Reader -> []byte
 	httpBodyByte, err := ioutil.ReadAll(httpBody)
 	if err != nil {
