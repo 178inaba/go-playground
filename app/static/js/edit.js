@@ -56,15 +56,9 @@ $(document).ready(function() {
 				$("#postGistDoneModal a#gistLink").attr("href", data);
 				$("#postGistDoneModal a#gistLink").text(data);
 				$("#postGistDoneModal").modal("show");
-				console.log(data);
-				console.log(textStatus);
-				console.log(jqXHR);
 			})
 			.fail(function(jqXHR, textStatus, errorThrown) {
 				$("#postGistFailModal").modal("show");
-				console.log(jqXHR);
-				console.log(textStatus);
-				console.log(errorThrown);
 			});
 	});
 
