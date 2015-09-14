@@ -1,6 +1,6 @@
-# go-playground
+# go playground + gist
 
-go-playground is web application that run code of go language.
+go playground + gist is web application that run code of go language.
 
 ## description
 
