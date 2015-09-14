@@ -25,6 +25,7 @@ func gistHandler(w http.ResponseWriter, r *http.Request) {
 	c, err := r.Cookie("access_token")
 	if err != nil {
 		log.Error("get cookie error: ", err)
+		http.Error(w, "Github Auth Error", http.StatusInternalServerError)
 		return
 	}
 
@@ -39,11 +40,14 @@ func gistHandler(w http.ResponseWriter, r *http.Request) {
 	gist, err := makeGist(r.Body)
 	if err != nil {
 		log.Errorf("make gist error: %v", err)
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+		return
 	}
 
 	retGist, _, err := client.Gists.Create(&gist)
 	if err != nil {
 		log.Error("create gist error: ", err)
+		http.Error(w, "Post Gist Error", http.StatusInternalServerError)
 		return
 	}
 
