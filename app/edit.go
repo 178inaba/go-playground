@@ -31,14 +31,26 @@ func init() {
 
 func edit(w http.ResponseWriter, r *http.Request) {
 	snip := &Snippet{Body: []byte(hello)}
+	id := ""
+	serveText := false
+
+	// get snip id
 	if strings.HasPrefix(r.URL.Path, "/p/") {
-		id := r.URL.Path[3:]
-		serveText := false
+		id = r.URL.Path[3:]
+
 		if strings.HasSuffix(id, ".go") {
 			id = id[:len(id)-3]
 			serveText = true
 		}
+	} else if c, err := r.Cookie("snip_id"); err == nil {
+		id = c.Value
 
+		// delete snip id from cookie
+		c.MaxAge = -1
+		http.SetCookie(w, c)
+	}
+
+	if id != "" {
 		// get mongo session
 		mgoSess := mgoSessOrgn.Copy()
 		defer mgoSess.Close()
@@ -56,5 +68,6 @@ func edit(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+
 	editTemplate.Execute(w, &editData{snip})
 }
