@@ -1,6 +1,7 @@
 # go playground to gist
 
 go playground to gist is web application that run code of go language.
+then code made can be saved to gist.
 
 ## description
 
