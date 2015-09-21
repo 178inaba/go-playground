@@ -47,15 +47,18 @@ $ docker run -d -p 8081:8080 --name name-sandbox tag/sandbox
 $ docker build --force-rm --no-cache -t tag/playground .
 $ docker run -d -p 8082:8080 --link mongo:mongo --link name-sandbox:sandbox --name name-playground tag/playground
 ```
+
 #### docker link host setting(setting.toml)
 
-mongo host setting
+* mongo host setting
+
 ```toml
 [mongo]
 host = "mongo"
 ```
 
-and sandbox url setting
+* sandbox url setting
+
 ```toml
 [sandbox]
 url = "http://sandbox:8080/compile"
