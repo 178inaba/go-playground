@@ -4,7 +4,7 @@ go playground to gist is web application that run code of go language.
 
 ## description
 
-inspired [golang/playground](https://github.com/golang/playground).
+inspired [golang/playground](https://github.com/golang/playground).  
 code that you made can be posted to [github gist](https://gist.github.com).
 
 ## run
