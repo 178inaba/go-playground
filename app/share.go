@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	salt           = "The Go Playground + gist"
+	salt           = "The Go Playground to gist"
 	maxSnippetSize = 64 * 1024
 )
 
