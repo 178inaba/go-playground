@@ -42,13 +42,13 @@ $ docker run --name mongo -d mongo
 # sandbox
 $ cd sandbox/
 $ docker build --force-rm --no-cache -t tag/sandbox .
-$ docker run -d -p 8081:8080 --name name-sandbox tag/sandbox
+$ docker run -d --name name-sandbox tag/sandbox
 
 # playground
 $ cd app/
 # edit setting/setting.toml in your client id and client secret from github, and more setting.
 $ docker build --force-rm --no-cache -t tag/playground .
-$ docker run -d -p 8082:8080 --link mongo:mongo --link name-sandbox:sandbox --name name-playground tag/playground
+$ docker run -d -p <use port>:8080 --link mongo:mongo --link name-sandbox:sandbox --name name-playground tag/playground
 ```
 
 #### docker link host setting(setting.toml)
