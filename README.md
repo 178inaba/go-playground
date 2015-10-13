@@ -23,7 +23,7 @@ $ docker run -d -p 8080:8080 --name name-sandbox tag/sandbox
 # preparation: it is allowed to run the mongo
 $ cd app/
 $ cp setting/setting_example.toml setting/setting.toml
-# edit setting/setting.toml in your client id and client secret
+# edit setting/setting.toml in your client id and client secret from github, and more setting.
 $ go run *.go # non build
 # or
 $ go build && ./app
@@ -40,10 +40,13 @@ $ go build && ./app
 $ docker run --name mongo -d mongo
 
 # sandbox
+$ cd sandbox/
 $ docker build --force-rm --no-cache -t tag/sandbox .
 $ docker run -d -p 8081:8080 --name name-sandbox tag/sandbox
 
 # playground
+# edit setting/setting.toml in your client id and client secret from github, and more setting.
+$ cd app/
 $ docker build --force-rm --no-cache -t tag/playground .
 $ docker run -d -p 8082:8080 --link mongo:mongo --link name-sandbox:sandbox --name name-playground tag/playground
 ```
